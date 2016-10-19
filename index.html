@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"  ng-app='carStore'>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+   <!-- Latest jquery -->
+   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<body ng-controller="StoreController as store">
+	
+	<div ng-repeat="car in cars.makes | limitTo:10">
+
+		<section ng-controller="PanelController as panel">
+			<h1>{{car.name}}</h1>
+			<h2>{{car.price}}</h2>
+			<p>{{car.desciption}}</p>
+			<button ng-show="product.canPurchase">Add to Cart</button>
+
+			<ul class="nav nav-pills">
+				<li ng-class="{active:panel.isSelected(1)}"><a href ng-click="panel.selectTab(1)">Description</a></li>
+				<li ng-class="{active:panel.isSelected(2)}"><a href ng-click="panel.selectTab(2)">Specification</a></li>
+				<li ng-class="{active:panel.isSelected(3)}"><a href ng-click="panel.selectTab(3)">Reviews</a></li>
+			</ul>
+			
+			<div class="pannel" ng-show="panel.isSelected(1)">
+				<h4>Description</h4>
+				<p>DESCRIPTIONS</p>
+			</div>
+			<div class="pannel" ng-show="panel.isSelected(2)">
+				<h4>Specification</h4>
+				<blockquote>none yet</blockquote>
+			</div>
+			<div class="pannel" ng-show="panel.isSelected(3)">
+				<h4>Reviews</h4>
+				<blockquote>none yet</blockquote>
+			</div>
+		</section> 
+	</div>
+	
+	<script src="assets/angular/angular.min.js"></script>
+	<script src="assets/js/app.js"></script>
+</body>
+</html>  
