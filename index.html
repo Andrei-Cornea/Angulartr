@@ -13,36 +13,83 @@
 
 </head>
 <body ng-controller="StoreController as store">
-	
-	<div ng-repeat="car in cars.makes | limitTo:10">
 
-		<section ng-controller="PanelController as panel">
-			<h1>{{car.name}}</h1>
-			<h2>{{car.price}}</h2>
-			<p>{{car.desciption}}</p>
-			<button ng-show="product.canPurchase">Add to Cart</button>
 
-			<ul class="nav nav-pills">
-				<li ng-class="{active:panel.isSelected(1)}"><a href ng-click="panel.selectTab(1)">Description</a></li>
-				<li ng-class="{active:panel.isSelected(2)}"><a href ng-click="panel.selectTab(2)">Specification</a></li>
-				<li ng-class="{active:panel.isSelected(3)}"><a href ng-click="panel.selectTab(3)">Reviews</a></li>
-			</ul>
-			
-			<div class="pannel" ng-show="panel.isSelected(1)">
-				<h4>Description</h4>
-				<p>DESCRIPTIONS</p>
+<section class="container-fluid" >
+	<div class="col-xs-12 col-md-2">
+		<form name="filterForm">
+					 <div >
+						<div class="input-group">
+						<input type="text" class="form-control" placeholder="Search for...">
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button">Go!</button>
+						</span>
+						</div><!-- /input-group -->
+					</div><!-- /.col-lg-6 -->
+					<br>
+					<div >
+						<label for="Brand" >Select Brand (select one):</label>
+						<select class="form-control" id="Brand" ng-model="filter.make">
+							<option ng-repeat="car in cars.makes"> {{car.name}} </option>
+						</select>
+					</div>
+					<br>
+					
+					<div >
+						<label for="model">Select model (select one):</label>
+						<select class="form-control" id="model">
+							<div ng-repeat="car in cars.makes"  >
+								<option > {{car.name}} </option>
+
+							</div>
+						</select>
+					</div>
+		</form>
+	</div>
+
+	<div class="col-xs-12 col-md-10">
+
+		<div  ng-repeat="car in cars.makes | limitTo:5 |filter:{name:'Audi'}" >
+			<div class="panel panel-default col-xs-12 col-sm-4" ng-repeat="model in car.models"> 
+
+				<div class="row panel-heading">
+					<h1 ng-style="{display: 'inline-block'}">{{model.name}} </h1>
+					<h3 class="glyphicon glyphicon-star-empty pull-right"   aria-hidden="true" 
+						ng-style="{display: 'inline-block'}"></h3>
+				</div>
+
+				<div class="panel-body " ng-controller="PanelController as panel" >
+					<h2>{{car.price}}</h2>
+					<p>{{car.desciption}}</p>
+					
+					<button ng-show="product.canPurchase">Add to Cart</button>
+
+					<ul class="nav row nav-pills">
+						<li ng-class="{active:panel.isSelected(1)}"><a href ng-click="panel.selectTab(1)">Description</a></li>
+						<li ng-class="{active:panel.isSelected(2)}"><a href ng-click="panel.selectTab(2)">Specification</a></li>
+						<li ng-class="{active:panel.isSelected(3)}"><a href ng-click="panel.selectTab(3)">Reviews</a></li>
+					</ul>
+					
+					<div class="" ng-show="panel.isSelected(1)">
+						<h4>Description</h4>
+						<p>DESCRIPTIONS</p>
+					</div>
+					<div class="" ng-show="panel.isSelected(2)">
+						<h4>Specification</h4>
+						<blockquote>none yet</blockquote>
+					</div>
+					<div class="" ng-show="panel.isSelected(3)">
+						<h4>Reviews</h4>
+						<blockquote>none yet</blockquote>
+					</div>
+				</div> 
 			</div>
-			<div class="pannel" ng-show="panel.isSelected(2)">
-				<h4>Specification</h4>
-				<blockquote>none yet</blockquote>
-			</div>
-			<div class="pannel" ng-show="panel.isSelected(3)">
-				<h4>Reviews</h4>
-				<blockquote>none yet</blockquote>
-			</div>
-		</section> 
+		</div>
+
 	</div>
 	
+</section>
+
 	<script src="assets/angular/angular.min.js"></script>
 	<script src="assets/js/app.js"></script>
 </body>
