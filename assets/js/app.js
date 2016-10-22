@@ -3,19 +3,24 @@
     var app = angular.module('carStore',[]);
     
     app.controller('StoreController',["$http","$scope",function($http,$scope){
-          
-        $http.get('http://api.edmunds.com/api/vehicle/v2/makes?fmt=json&api_key=e6jd7d4rx7qx64r5dskzwdwc')
-        .success(function(response){ //make a get request to mock json file.
-            $scope.cars = response; //Assign data received to $scope.data
-            console.log(response);
-            // console.log($scope.filter);
-        })
-        .error(function(err){
-            //handle error
-            console.log("Error:",err);
-        });
-        
-          console.log($scope);
+       
+        $http({
+            method: 'GET',
+            url: 'http://api.edmunds.com/api/vehicle/v2/makes?fmt=json&api_key=e6jd7d4rx7qx64r5dskzwdwc'
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+                $scope.cars=response.data;
+                // console.log($scope.cars);
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                console.log("No response from the server!")
+            });
+              
+
+                console.log( $scope)
+
             }] );
 
     app.controller("PanelController", function(){

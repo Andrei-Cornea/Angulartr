@@ -29,27 +29,28 @@
 					<br>
 					<div>
 						<label for="Brand" >Select Brand :</label>
-						<select class="form-control" id="Brand" ng-model="filter.make">
-							<option value=""  ng-model="selected"> all </option>
-							<option ng-repeat="car in cars.makes" value={{car.name}}> {{car.name}} </option>
+						<select class="form-control" id="Brand" ng-model="filter.make" >
+							<option value=""  selected="selected"> all </option>
+							<option ng-repeat="car in cars.makes" ng-value="car.name"> {{car.name}} </option>
 						</select>
 					</div>
 					<br>
 					
 					<div>
 						<label for="model">Select model :</label>
-						<select ng-model="filter.model"  class="form-control" id="model" ng-repeat="car in cars.makes|filter: filter.make">
-							<option value=""  ng-model="selected"> all </option>
-							<option ng-repeat="model in car.models" value={{model.name}}> {{model.name}} </option>
+						<select ng-if="filter.make" ng-disabled="!filter.make"  ng-model="filter.model"  class="form-control" id="model" 
+						ng-repeat="car in cars.makes|filter: filter.make " >
+							<option value=""  selected="selected"> all </option>
+							<option ng-repeat="model in car.models" ng-value="model.name"> {{model.name}} </option>
 						</select>
 					</div>
 		</form>
-		
 	</div>
 
 	<div class="col-xs-12 col-md-10">
 
 		<div  ng-repeat="car in cars.makes |filter: filter.make |filter: search" >
+			
 			<div class="panel panel-default col-xs-12 col-sm-3" ng-repeat="model in car.models| filter:filter.model"> 
 
 				<div class="row panel-heading">
