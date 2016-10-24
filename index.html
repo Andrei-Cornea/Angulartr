@@ -14,13 +14,12 @@
 </head>
 <body ng-controller="StoreController as store">
 
-
 <section class="container-fluid" >
 	<div class="col-xs-12 col-md-2">
 		<form name="filterForm">
 					 <div >
 						<div class="input-group">
-						<input type="text" class="form-control" placeholder="Search by brand..." ng-model="search">
+						<input type="text" class="form-control" placeholder="Search ..." ng-model="search">
 						 <span class="input-group-addon " id="basic-addon1">
 							 	<span class="glyphicon glyphicon-search"></span>
 						 </span>
@@ -30,7 +29,7 @@
 					<div>
 						<label for="Brand" >Select Brand :</label>
 						<select class="form-control" id="Brand" ng-model="filter.make" >
-							<option value=""  selected="selected"> all </option>
+							<option value="{{filter.make}}"  selected="selected"> all </option>
 							<option ng-repeat="car in cars.makes" ng-value="car.name"> {{car.name}} </option>
 						</select>
 					</div>
@@ -38,10 +37,9 @@
 					
 					<div>
 						<label for="model">Select model :</label>
-						<select ng-if="filter.make" ng-disabled="!filter.make"  ng-model="filter.model"  class="form-control" id="model" 
-						ng-repeat="car in cars.makes|filter: filter.make " >
-							<option value=""  selected="selected"> all </option>
-							<option ng-repeat="model in car.models" ng-value="model.name"> {{model.name}} </option>
+						<select  ng-disabled="!filter.make"  ng-model="filter.model"  class="form-control" id="model" >
+							<option value="{{filter.model}}"  selected="selected"> all </option>
+							<option ng-if="filter.make" ng-repeat="model in models(cars.makes,filter.make)"  ng-value="model.name"> {{model}} </option>
 						</select>
 					</div>
 		</form>
@@ -51,10 +49,13 @@
 
 		<div  ng-repeat="car in cars.makes |filter: filter.make |filter: search" >
 			
-			<div class="panel panel-default col-xs-12 col-sm-3" ng-repeat="model in car.models| filter:filter.model"> 
+			<div class="panel panel-default col-xs-12 col-sm-3" ng-repeat="model in car.models| filter:filter.model | filter:search"> 
 
 				<div class="row panel-heading">
-					<h1 class="col-sm-10" ng-style="{display: 'inline-block'}">{{car.name}} <br> {{model.name}} </h1>
+					<div class="col-sm-10" ng-style="{display: 'inline-block'}">
+						<h1>{{car.name}} </h1>
+					<h1>{{model.name}} </h1>
+					</div>
 					<h3 class="glyphicon glyphicon-star-empty pull-right"   aria-hidden="true" 
 						ng-style="{display: 'inline-block'}"></h3>
 				</div>
