@@ -19,7 +19,7 @@
 		<form name="filterForm">
 					 <div >
 						<div class="input-group">
-						<input type="text" class="form-control" placeholder="Search ..." ng-model="search">
+						<input type="text" class="form-control" placeholder="Search ..." ng-model="filter.search">
 						 <span class="input-group-addon " id="basic-addon1">
 							 	<span class="glyphicon glyphicon-search"></span>
 						 </span>
@@ -28,50 +28,46 @@
 					<br>
 					<div>
 						<label for="Brand" >Select Brand :</label>
-						<select class="form-control" id="Brand" ng-model="filter.make" >
-							<option value="{{filter.make}}"  selected="selected"> all </option>
-							<option ng-repeat="car in cars.makes" ng-value="car.name"> {{car.name}} </option>
+						<select class="form-control" id="Brand" ng-model="filter.make"  ng-click="store.getmodels(filter.make)">
+							<option value=""  selected="selected"> all </option>
+							<option ng-repeat="car in store.cars" ng-value="car.name"> {{car.name}} </option>
 						</select>
 					</div>
 					<br>
-					
+
 					<div>
 						<label for="model">Select model :</label>
-						<select  ng-disabled="!filter.make"  ng-model="filter.model"  class="form-control" id="model" >
-							<option value="{{filter.model}}"  selected="selected"> all </option>
-							<option ng-if="filter.make" ng-repeat="model in models(cars.makes,filter.make)"  ng-value="model.name"> {{model}} </option>
+						<select    ng-model="filter.model"  class="form-control" id="model" >
+							<option value=""  ng-selected="selected"> all </option>
+							<option  ng-repeat="model in store.cars.models| filter:{$: 'filter.make'}"  ng-value="model"> {{model}} </option>
 						</select>
 					</div>
 		</form>
 	</div>
-
+<!-- {{store.cars}} -->
 	<div class="col-xs-12 col-md-10">
 
-		<div  ng-repeat="car in cars.makes |filter: filter.make |filter: search" >
-			
-			<div class="panel panel-default col-xs-12 col-sm-3" ng-repeat="model in car.models| filter:filter.model | filter:search"> 
+		<div  ng-repeat="car in store.cars |filter: filter.make " >
+
+			<div class="panel panel-default col-xs-12 col-sm-3" ng-repeat="model in car.models|filter:filter.search |filter:filter.model">
 
 				<div class="row panel-heading">
-					<div class="col-sm-10" ng-style="{display: 'inline-block'}">
-						<h1>{{car.name}} </h1>
-					<h1>{{model.name}} </h1>
-					</div>
-					<h3 class="glyphicon glyphicon-star-empty pull-right"   aria-hidden="true" 
-						ng-style="{display: 'inline-block'}"></h3>
+						<h1>{{car.name}}
+							<span class="glyphicon glyphicon-star-empty pull-right"   aria-hidden="true"></span>
+						 </h1>
+						<h1>{{model}} </h1>
 				</div>
 
 				<div class="panel-body " ng-controller="PanelController as panel" >
-					<h2>{{car.price}}</h2>
-					<p>{{car.desciption}}</p>
-					
-					<button ng-show="product.canPurchase">Add to Cart</button>
+
+					<button ng-show="car.canPurchase">Add to Cart</button>
 
 					<ul class="nav row nav-pills">
 						<li ng-class="{active:panel.isSelected(1)}"><a href ng-click="panel.selectTab(1)">Description</a></li>
 						<li ng-class="{active:panel.isSelected(2)}"><a href ng-click="panel.selectTab(2)">Specification</a></li>
 						<li ng-class="{active:panel.isSelected(3)}"><a href ng-click="panel.selectTab(3)">Reviews</a></li>
 					</ul>
-					
+
 					<div class="" ng-show="panel.isSelected(1)">
 						<h4>Description</h4>
 						<p>DESCRIPTIONS</p>
@@ -84,15 +80,17 @@
 						<h4>Reviews</h4>
 						<blockquote>none yet</blockquote>
 					</div>
-				</div> 
+				</div>
 			</div>
 		</div>
 
 	</div>
-	
+
 </section>
 
+
 	<script src="assets/angular/angular.min.js"></script>
-	<script src="assets/js/app.js"></script>
+	<!-- <script src="assets/js/app.js"></script> -->
+	<script src="assets/js/app1.js"></script>
 </body>
-</html>  
+</html>
