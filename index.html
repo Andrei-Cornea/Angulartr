@@ -28,34 +28,40 @@
 					<br>
 					<div>
 						<label for="Brand" >Select Brand :</label>
-						<select class="form-control" id="Brand" ng-model="filter.make"  ng-click="store.getmodels(filter.make)">
-							<option value=""  selected="selected"> all </option>
-							<option ng-repeat="car in store.cars" ng-value="car.name"> {{car.name}} </option>
+						<select class="form-control" id="Brand" ng-model="filter.make" ng-change="filter.model=''"  ng-click="store.getmodels(filter.make)">
+							<option value=""  selected="selected"> --- Select --- </option>
+							<option ng-repeat="brand in store.cars.name" ng-value="brand"> {{brand}} </option>
 						</select>
 					</div>
 					<br>
 
 					<div>
 						<label for="model">Select model :</label>
-						<select    ng-model="filter.model"  class="form-control" id="model" >
-							<option value=""  ng-selected="selected"> all </option>
-							<option  ng-repeat="model in store.cars.models| filter:{$: 'filter.make'}"  ng-value="model"> {{model}} </option>
+						<select ng-disabled="!filter.make"   ng-model="filter.model"  class="form-control" id="model" >
+							<option value=""  ng-selected="selected"> --- Select --- </option>
+							<option ng-if="filter.make" ng-repeat="model in store.cars.models| filter:filter.make"  ng-value="model.name"> {{model.name}} </option>
 						</select>
 					</div>
 		</form>
+		<div class="text-center">
+			<button class="btn btn-lg btn-primary">
+				<span class="glyphicon glyphicon-shopping-cart"></span> asffssadasffssad
+			</button>
+		</div>
 	</div>
-<!-- {{store.cars}} -->
 	<div class="col-xs-12 col-md-10">
 
-		<div  ng-repeat="car in store.cars |filter: filter.make " >
+		<div  ng-repeat="car in store.cars.models |filter: filter.make |filter: filter.model |filter: filter.search" >
 
-			<div class="panel panel-default col-xs-12 col-sm-3" ng-repeat="model in car.models|filter:filter.search |filter:filter.model">
+			<div class="panel panel-default col-xs-12 col-sm-3"  >
 
 				<div class="row panel-heading">
-						<h1>{{car.name}}
-							<span class="glyphicon glyphicon-star-empty pull-right"   aria-hidden="true"></span>
+						<h1>{{car.make}}
+							<span ng-click="store.addToCart({name:car.make,model:car.name}); add=true"  class="glyphicon  pull-right "
+
+							ng-class="add?'glyphicon-star':'glyphicon-star-empty'"  aria-hidden="true"></span>
 						 </h1>
-						<h1>{{model}} </h1>
+						<h1>{{car.name}} </h1>
 				</div>
 
 				<div class="panel-body " ng-controller="PanelController as panel" >
