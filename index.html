@@ -43,10 +43,32 @@
 						</select>
 					</div>
 		</form>
+		<br><br>
 		<div class="text-center">
-			<button class="btn btn-lg btn-primary">
-				<span class="glyphicon glyphicon-shopping-cart"></span> asffssadasffssad
-			</button>
+			<div class="btn btn-lg btn-primary">
+				<span class="glyphicon glyphicon-shopping-cart"></span>
+				CART
+				 <span  class="badge" ng-if="store.itemsInCart"> {{store.itemsInCart}} </span>
+			</div>
+			<button class="btn btn-lg btn-success" ng-disabled="!store.itemsInCart">Complete</button>
+		</div><br>
+		<div class="">
+
+			<ul class="list-group" >
+			  <li class="list-group-item active" ng-if="store.itemsInCart" ng-repeat="item in store.cart" id="{{$index}}">
+					<div class="row">
+						<div class="col-xs-10" >
+							<span><b>Brand:</b> {{item.name}} </span><br>
+							<span><b>Model:</b> {{item.model}} </span>
+						</div>
+						<div class="col-xs-1">
+							<span aria-hidden="true" class="close" ng-click="store.removeCartItem($index)" style="font-size:40px;">&times;</span>
+						</div>
+					</div>
+
+			  </li>
+			</ul>
+
 		</div>
 	</div>
 	<div class="col-xs-12 col-md-10">
@@ -96,6 +118,8 @@
 
 
 	<script src="assets/angular/angular.min.js"></script>
+	<script src="assets/angular/angular-animate.min.js"></script>
+	<script src="assets/angular/ui-bootstrap-tpls-2.2.0.min.js"></script>
 	<!-- <script src="assets/js/app.js"></script> -->
 	<script src="assets/js/app1.js"></script>
 </body>

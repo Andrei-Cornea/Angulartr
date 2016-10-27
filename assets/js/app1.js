@@ -1,10 +1,10 @@
 (function(){
-  var app = angular.module("carStore",[]);
+  var app = angular.module("carStore",['ui.bootstrap']);
 
   app.controller("StoreController",["$http","dataService",function($http, dataService){
     var vm = this;
     vm.cart=[];
-
+    vm.itemsInCart = null ;
     $http.get("http://api.edmunds.com/api/vehicle/v2/makes?fmt=json&api_key=e6jd7d4rx7qx64r5dskzwdwc")
           .success(function(data){
         // vm.cars = data;
@@ -24,11 +24,19 @@
 
         if(add){
            vm.cart.push(val);
+           vm.itemsInCart = vm.cart.length;
            console.log("added");
         }
         console.log(vm.cart);
     }
 
+    vm.removeCartItem= function(item){
+      // console.log(item);
+      vm.cart.splice(item,1);
+      vm.itemsInCart = vm.cart.length;
+      console.log(vm.cart);
+      console.log("removed!");
+    }
 
   }])
 
