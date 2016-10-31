@@ -20,20 +20,39 @@
               }
         })
 
+        vm.cars.models.forEach(function(item){
+              if(item.id === val.id){
+                item.selected = true;
+              }
+        })
+
+
         if(add){
+
            vm.cart.push(val);
            vm.itemsInCart = vm.cart.length;
            console.log("added");
         }
-        console.log(vm.cart);
+        console.log("Cart -",vm.cart);
+        console.log("Cars -",vm.cars);
     }
 
     vm.removeCartItem= function(item){
-      // console.log(item);
+      console.log(item.id);
+
+      vm.cars.models.forEach(function(model){
+
+            if(model.id === item.id){
+               model.selected = false;
+            }
+      })
+
       vm.cart.splice(item,1);
       vm.itemsInCart = vm.cart.length;
-      console.log(vm.cart);
       console.log("removed!");
+      console.log("Cart -",vm.cart);
+      console.log("Cars -",vm.cars);
+
     }
 
 
@@ -71,6 +90,7 @@
     }
   })
 
+
   app.factory("dataService",['$http',function($http){
     var data = {};
     data.models=[];
@@ -79,11 +99,19 @@
     var getData = function(){
          return  $http.get("http://api.edmunds.com/api/vehicle/v2/makes?fmt=json&api_key=e6jd7d4rx7qx64r5dskzwdwc")
              .then(function(response){
+                    var id = 0;
 
                      response.data.makes.forEach(function(entry){
                        data.name.push(entry.name);
                          entry.models.forEach(function(model){
-                           data.models.push({name:model.name,make:entry.name});
+                           data.models.push(
+                             {
+                             name:model.name,
+                             make:entry.name,
+                             id:id++,
+                             selected:false
+                           });
+
                          });
 
                      })
@@ -100,26 +128,33 @@
   }])
 
 
-})()
 
-angular.module('carStore').controller('ModalInstanceCtrl', function ($uibModalInstance, cart) {
+angular.module('carStore')
+       .controller('ModalInstanceCtrl', function ($uibModalInstance, cart) {
 
   var vm = this;
   vm.cart = cart;
   vm.itemsInCart = vm.cart.length;
-  // vm.selected = {
-  //   item: vm.items[0]
-  // };
 
   vm.ok = function () {
-    $uibModalInstance.close("true");
+    $uibModalInstance.close();
   };
+
+  vm.validateName = function(val){
+
+    var patt = /^(?:([A-Za-z])(?!.*\1)){0,5}$/ig;
+
+    return patt.test(val);
+  }
 
   vm.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
 });
 
+
+
+})()
 // app.factory("dataService",function(){
 //   return{
 //     processingData: function(){

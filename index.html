@@ -17,6 +17,9 @@
 	[name="orderForm"] .ng-valid.ng-dirty{
 		border-color: #78fa89;
 	}
+	.help-block{
+		color: red;
+	}
 </style>
 </head>
 <body ng-controller="StoreController as store" class='modal-parent'>
@@ -28,20 +31,22 @@
 
 	        <div class="modal-body" id="modal-body">
 
-
-
 						<form name="orderForm" ng-submit="modal.addReview(product)" novalidate>
 						  <fieldset class="form-group">
-						  	<input type="text" ng-model="modal.name" placeholder="Name" class="form-control" required>
+						  	<input type="text" ng-model="modal.name" name="name" placeholder="Name" class="form-control"  required>
+								<p ng-show="!orderForm.name.$setValidity('text', modal.validateName(modal.name)) && orderForm.name.$invalid && !orderForm.name.$pristine" class="help-block">Max lenght 5 unique characters</p>
+
 						  </fieldset>
 						  <fieldset class="form-group">
-						    <input ng-model="modal.mail" type="email" class="form-control"  placeholder="jimmyDean@example.org" title="Email" required />
+						    <input ng-model="modal.mail" type="email"  name="email" class="form-control"  placeholder="jimmyDean@example.org" title="Email" required />
+								 <p ng-show="orderForm.email.$invalid && !orderForm.email.$pristine" class="help-block">Enter a valid email.</p>
 						  </fieldset>
 							<fieldset class="form-group">
-								<textarea ng-model="modal.review" class="form-control" placeholder="Write a short review of the product..." title="Review" required></textarea>
+								<textarea ng-model="modal.review" name="message" class="form-control" placeholder="Write a short review of the product..." title="Review" required></textarea>
+								<p ng-show="orderForm.message.$invalid && !orderForm.message.$pristine" class="help-block">Enter a message.</p>
 							</fieldset>
 							<div class="modal-footer">
-								<button type="submit" class="btn btn-primary" type="button" ng-click="orderForm.$valid && modal.ok()">Submit Order</button>
+								<button type="submit" class="btn btn-primary" type="button" ng-disabled="orderForm.$invalid"  ng-click="modal.ok()">Submit Order</button>
 								<button class="btn btn-warning" type="button" ng-click="modal.cancel()">Cancel</button>
 							</div>
 							review form is {{orderForm.$valid}}
@@ -83,7 +88,7 @@
 		</form>
 		<br><br>
 		<div class="text-center">
-			<div class="btn btn-lg btn-primary" >
+			<div class="btn btn-lg btn-primary"  ng-click="showCart = !showCart">
 				<span class="glyphicon glyphicon-shopping-cart"></span>
 				CART
 				 <span  class="badge" ng-if="store.itemsInCart"> {{store.itemsInCart}} </span>
@@ -92,7 +97,7 @@
 		</div><br>
 		<div class="">
 
-			<ul class="list-group" >
+			<ul class="list-group"  ng-show="showCart">
 			  <li class="list-group-item active" ng-if="store.itemsInCart" ng-repeat="item in store.cart" id="{{$index}}">
 					<div class="row">
 						<div class="col-xs-10" >
@@ -100,10 +105,9 @@
 							<span><b>Model:</b> {{item.model}} </span>
 						</div>
 						<div class="col-xs-1">
-							<span aria-hidden="true" class="close" ng-click="store.removeCartItem($index)" style="font-size:40px;">&times;</span>
+							<span aria-hidden="true" class="close" ng-click="store.removeCartItem(item); item.selected=false;" style="font-size:40px;">&times;</span>
 						</div>
 					</div>
-
 			  </li>
 			</ul>
 
@@ -117,9 +121,9 @@
 
 				<div class="row panel-heading">
 						<h1>{{car.make}}
-							<span ng-click="store.addToCart({name:car.make,model:car.name}); add=true"  class="glyphicon  pull-right "
+							<span ng-click="store.addToCart({name:car.make,model:car.name,id:car.id}); add=true"  class="glyphicon  pull-right "
 
-							ng-class="add?'glyphicon-star':'glyphicon-star-empty'"  aria-hidden="true"></span>
+							ng-class=" car.selected ?'glyphicon-star':'glyphicon-star-empty'"  aria-hidden="true"></span>
 						 </h1>
 						<h1>{{car.name}} </h1>
 				</div>
