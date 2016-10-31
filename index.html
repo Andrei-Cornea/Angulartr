@@ -10,9 +10,47 @@
    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+<style >
+	[name="orderForm"] .ng-invalid.ng-dirty{
+		border-color: #fa787e;
+	}
+	[name="orderForm"] .ng-valid.ng-dirty{
+		border-color: #78fa89;
+	}
+</style>
 </head>
-<body ng-controller="StoreController as store">
+<body ng-controller="StoreController as store" class='modal-parent'>
+
+	<script type="text/ng-template" id="myModalContent.html">
+	        <div class="modal-header">
+	            <h3 class="modal-title" id="modal-title">Order Form</h3>
+	        </div>
+
+	        <div class="modal-body" id="modal-body">
+
+
+
+						<form name="orderForm" ng-submit="modal.addReview(product)" novalidate>
+						  <fieldset class="form-group">
+						  	<input type="text" ng-model="modal.name" placeholder="Name" class="form-control" required>
+						  </fieldset>
+						  <fieldset class="form-group">
+						    <input ng-model="modal.mail" type="email" class="form-control"  placeholder="jimmyDean@example.org" title="Email" required />
+						  </fieldset>
+							<fieldset class="form-group">
+								<textarea ng-model="modal.review" class="form-control" placeholder="Write a short review of the product..." title="Review" required></textarea>
+							</fieldset>
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-primary" type="button" ng-click="orderForm.$valid && modal.ok()">Submit Order</button>
+								<button class="btn btn-warning" type="button" ng-click="modal.cancel()">Cancel</button>
+							</div>
+							review form is {{orderForm.$valid}}
+						</form>
+
+	        </div>
+
+	  </script>
+
 
 <section class="container-fluid" >
 	<div class="col-xs-12 col-md-2">
@@ -45,12 +83,12 @@
 		</form>
 		<br><br>
 		<div class="text-center">
-			<div class="btn btn-lg btn-primary">
+			<div class="btn btn-lg btn-primary" >
 				<span class="glyphicon glyphicon-shopping-cart"></span>
 				CART
 				 <span  class="badge" ng-if="store.itemsInCart"> {{store.itemsInCart}} </span>
 			</div>
-			<button class="btn btn-lg btn-success" ng-disabled="!store.itemsInCart">Complete</button>
+			<button class="btn btn-lg btn-success" ng-disabled="!store.itemsInCart" ng-click="store.openModal('lg')">Complete</button>
 		</div><br>
 		<div class="">
 
