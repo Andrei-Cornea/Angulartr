@@ -1,6 +1,3 @@
-
-var app = angular.module("carStore",['ui.bootstrap']);
-
 app.factory("dataService",['$http',function($http){
   var data = {};
   data.models=[];
