@@ -142,7 +142,7 @@ angular.module('carStore')
 
   vm.validateName = function(val){
 
-    var patt = /^(?:([A-Za-z])(?!.*\1)){0,5}$/ig;
+    var patt = /^(?!.*([A-Za-z0-9])\1{1})[A-Za-z0-9]{5,}$/;
 
     return patt.test(val);
   }
