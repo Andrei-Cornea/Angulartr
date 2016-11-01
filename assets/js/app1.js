@@ -65,6 +65,17 @@
                 }
               }
       })
+      modalInstance.result.then(function (data) {
+          vm.itemsInCart = null;
+          vm.cars.models.forEach(function(item) {
+                if(item.selected == true) {
+                  item.selected = false;
+                }
+          })
+          }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+
+          });
     }
   }])
 
@@ -81,36 +92,33 @@
   })
 
 angular.module('carStore')
-       .controller('ModalInstanceCtrl', ['$window', '$uibModalInstance', 'cart', 'itemsInCart', function ($window, $uibModalInstance, cart, itemsInCart) {
+       .controller('ModalInstanceCtrl', ['$window', '$uibModalInstance', 'cart', function ($window, $uibModalInstance, cart) {
 
-  var vm = this;
-  vm.cart = cart;
-  vm.itemsInCart = itemsInCart;
+    var vm = this;
+    vm.cart = cart;
+    vm.itemsInCart = vm.cart.length;
 
-  vm.orders = [];
-
-    vm.orderId = 0;
     vm.storeOrder = function () {
-    console.log(vm.cart);
-    console.log(vm.user);
 
-    vm.finalOrder = {
-      orderId: 'orderNo-' + vm.orderId,
-      customerName: vm.user.name,
-      customerEmail: vm.user.mail,
-      customerReview: vm.user.review,
-      orderDescription: vm.cart
-    }
-    vm.orders.push(vm.finalOrder);
-    vm.orderId++;
+      console.log(vm.cart);
+      console.log(vm.user);
 
-    console.log(vm.finalOrder)
-    console.log("wedgwregweg " +vm.orders)
+      vm.finalOrder = [
+        customerName = vm.user.name,
+        customerEmail = vm.user.mail,
+        customerReview = vm.user.review,
+        orderDescription = vm.cart
+      ]
 
-vm.cart.length = 0;
-  vm.itemsInCart = vm.cart.length;
-console.log(vm.cart)
-    $uibModalInstance.close();
+      if (vm.user.name in $window.localStorage){
+        console.log("Please choose another username!");
+      } else {
+        $window.localStorage.setItem(vm.user.name, vm.finalOrder)
+        // $window.location.reload();
+      }
+
+      $uibModalInstance.close();
+
 
   };
 
